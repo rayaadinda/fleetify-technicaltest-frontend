@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 
 import StepClient from "@/components/wizard/StepClient";
 import StepItems from "@/components/wizard/StepItems";
@@ -12,25 +12,25 @@ export default function Home() {
   const router = useRouter();
   const { isReady, replace } = router;
   const step = useWizardStore((state) => state.step);
-  const [hydrated, setHydrated] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  const hasRedirectedRef = useRef(false);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated || !isReady) {
+    if (!isClient || !isReady) {
       return;
     }
 
     if (!hasValidToken()) {
-      void replace("/login");
-      return;
+      if (!hasRedirectedRef.current) {
+        hasRedirectedRef.current = true;
+        void replace("/login");
+      }
     }
-
-    setCheckingAuth(false);
-  }, [hydrated, isReady, replace]);
+  }, [isClient, isReady, replace]);
 
   const stepTitle = useMemo(() => {
     if (step === 1) {
@@ -42,7 +42,7 @@ export default function Home() {
     return "Review & Cetak";
   }, [step]);
 
-  if (!hydrated || checkingAuth) {
+  if (!isClient || !isReady || !hasValidToken()) {
     return (
       <div className="mesh-bg flex min-h-screen items-center justify-center px-6">
         <p className="rounded-2xl border border-slate-700 bg-slate-900/70 px-5 py-4 text-sm text-slate-200">

@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 import { hasValidToken } from "@/lib/auth";
 import api from "@/lib/http";
@@ -19,6 +19,7 @@ type LoginResponse = {
 export default function LoginPage() {
   const router = useRouter();
   const { isReady, replace } = router;
+  const hasRedirectedRef = useRef(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
@@ -28,7 +29,8 @@ export default function LoginPage() {
       return;
     }
 
-    if (hasValidToken()) {
+    if (hasValidToken() && !hasRedirectedRef.current) {
+      hasRedirectedRef.current = true;
       void replace("/");
     }
   }, [isReady, replace]);
