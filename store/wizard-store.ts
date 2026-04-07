@@ -21,10 +21,8 @@ type ClientData = {
 
 type WizardState = {
   step: 1 | 2 | 3;
-  hydrated: boolean;
   clientData: ClientData;
   items: ItemRow[];
-  setHydrated: (hydrated: boolean) => void;
   setStep: (step: 1 | 2 | 3) => void;
   nextStep: () => void;
   prevStep: () => void;
@@ -59,10 +57,8 @@ export const useWizardStore = create<WizardState>()(
   persist(
     (set, get) => ({
       step: 1,
-      hydrated: false,
       clientData: initialClientData,
       items: initialItems,
-      setHydrated: (hydrated) => set({ hydrated }),
       setStep: (step) => set({ step }),
       nextStep: () => {
         const current = get().step;
@@ -134,9 +130,6 @@ export const useWizardStore = create<WizardState>()(
           error: "",
         })),
       }),
-      onRehydrateStorage: () => (state) => {
-        state?.setHydrated(true);
-      },
     }
   )
 );

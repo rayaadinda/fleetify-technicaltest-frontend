@@ -18,15 +18,20 @@ type LoginResponse = {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { isReady, replace } = router;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
 
   useEffect(() => {
-    if (hasValidToken()) {
-      router.replace("/");
+    if (!isReady) {
+      return;
     }
-  }, [router]);
+
+    if (hasValidToken()) {
+      void replace("/");
+    }
+  }, [isReady, replace]);
 
   const loginMutation = useMutation({
     mutationFn: async () => {
@@ -43,7 +48,7 @@ export default function LoginPage() {
         sameSite: "strict",
       });
       setFormError("");
-      router.replace("/");
+      void replace("/");
     },
     onError: () => {
       setFormError("Username atau password tidak valid.");

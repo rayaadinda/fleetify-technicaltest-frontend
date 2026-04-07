@@ -10,20 +10,27 @@ import { useWizardStore } from "@/store/wizard-store";
 
 export default function Home() {
   const router = useRouter();
-  const { step, hydrated } = useWizardStore((state) => ({
-    step: state.step,
-    hydrated: state.hydrated,
-  }));
+  const { isReady, replace } = router;
+  const step = useWizardStore((state) => state.step);
+  const [hydrated, setHydrated] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated || !isReady) {
+      return;
+    }
+
     if (!hasValidToken()) {
-      router.replace("/login");
+      void replace("/login");
       return;
     }
 
     setCheckingAuth(false);
-  }, [router]);
+  }, [hydrated, isReady, replace]);
 
   const stepTitle = useMemo(() => {
     if (step === 1) {
