@@ -8,7 +8,6 @@ import {
 import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Command,
@@ -184,7 +183,7 @@ function ItemCodeCell({ row }: { row: ItemRowType }) {
         <PopoverContent
           align="start"
           sideOffset={8}
-          className="w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-foreground/70 bg-white p-0 shadow-2xl"
+          className="w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-white p-0 shadow-lg"
         >
           <Command>
             <CommandInput placeholder="Cari kode barang..." value={search} onValueChange={setSearch} />
@@ -267,7 +266,9 @@ export default function ItemsDataTable({ items, canRemove, onRemove }: Props) {
       {
         accessorKey: "subtotal",
         header: "Subtotal",
-        cell: ({ row }) => <Badge variant="outline">Rp {currency.format(row.original.subtotal)}</Badge>,
+        cell: ({ row }) => (
+          <span className="text-sm font-medium tabular-nums">Rp {currency.format(row.original.subtotal)}</span>
+        ),
       },
       {
         id: "actions",
@@ -296,7 +297,7 @@ export default function ItemsDataTable({ items, canRemove, onRemove }: Props) {
   });
 
   return (
-    <div className="overflow-hidden rounded-md border border-foreground/60 bg-white">
+    <div className="overflow-hidden rounded-xl border border-border bg-white">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

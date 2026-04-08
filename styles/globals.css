@@ -126,29 +126,48 @@ select,
 
 .wizard-surface,
 .wizard-theme-root {
-  --background: oklch(1 0 0);
+  --background: oklch(0.965 0 0);
   --foreground: oklch(0.15 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(1 0 0);
-  --primary-foreground: oklch(0.15 0 0);
-  --secondary: oklch(0.96 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.94 0 0);
   --secondary-foreground: oklch(0.15 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.97 0 0);
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.95 0 0);
   --accent-foreground: oklch(0.15 0 0);
-  --border: oklch(0.25 0 0);
-  --input: oklch(0.25 0 0);
-  --ring: oklch(0.15 0 0);
+  --border: oklch(0.84 0 0);
+  --input: oklch(0.84 0 0);
+  --ring: oklch(0.52 0 0);
   color: var(--foreground);
   background: var(--background);
 }
 
 .wizard-surface .mesh-bg {
   background: var(--background);
+}
+
+:is(.wizard-surface, .wizard-theme-root) [data-slot="card"] {
+  box-shadow: none;
+  border-color: var(--border);
+  background: var(--card);
+}
+
+:is(.wizard-surface, .wizard-theme-root) [data-slot="input"],
+:is(.wizard-surface, .wizard-theme-root) [data-slot="textarea"],
+:is(.wizard-surface, .wizard-theme-root) [data-slot="popover-content"],
+:is(.wizard-surface, .wizard-theme-root) [data-slot="table"] {
+  border-color: var(--border);
+}
+
+:is(.wizard-surface, .wizard-theme-root) [data-slot="input"]:focus-visible,
+:is(.wizard-surface, .wizard-theme-root) [data-slot="textarea"]:focus-visible {
+  border-color: var(--foreground);
+  box-shadow: none;
 }
 
 @media print {

@@ -128,9 +128,9 @@ export default function Home() {
                     key={item.value}
                     value={item.value}
                     className={cn(
-                      "rounded-md border px-3 py-3 text-left transition-colors",
-                      isActive && "border-foreground bg-white text-foreground shadow-sm",
-                      isDone && "border-border bg-neutral-50 text-muted-foreground/80",
+                      "rounded-xl border bg-white px-4 py-3 text-left transition-colors",
+                      isActive && "border-foreground text-foreground shadow-sm",
+                      isDone && "border-border text-muted-foreground",
                       !isActive && !isDone && "bg-white text-foreground"
                     )}
                   >

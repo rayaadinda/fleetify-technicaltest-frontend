@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWizardStore } from "@/store/wizard-store";
@@ -47,7 +46,9 @@ export default function StepItems() {
           <Button type="button" variant="outline" onClick={addItemRow}>
             + Tambah Baris
           </Button>
-          <Badge variant="outline">Estimasi Total: Rp {currency.format(total)}</Badge>
+          <div className="rounded-md border border-border bg-white px-3 py-1.5 text-sm font-medium text-foreground">
+            Estimasi Total: Rp {currency.format(total)}
+          </div>
         </div>
 
         {error ? (
@@ -61,7 +62,7 @@ export default function StepItems() {
           <Button type="button" variant="outline" onClick={prevStep}>
             Kembali
           </Button>
-          <Button type="button" variant="outline" onClick={handleNext}>
+          <Button type="button" onClick={handleNext}>
             Lanjut ke Review
           </Button>
         </div>

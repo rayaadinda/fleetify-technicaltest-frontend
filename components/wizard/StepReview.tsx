@@ -212,7 +212,7 @@ export default function StepReview() {
               Cetak Invoice
             </Button>
 
-            <Button type="button" variant="outline" onClick={() => submitMutation.mutate()} disabled={submitMutation.isPending || submitted !== null}>
+            <Button type="button" onClick={() => submitMutation.mutate()} disabled={submitMutation.isPending || submitted !== null}>
               {submitMutation.isPending ? "Mengirim..." : "Submit Invoice"}
             </Button>
 

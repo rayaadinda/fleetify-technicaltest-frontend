@@ -79,7 +79,7 @@ export default function StepClient() {
         ) : null}
 
         <div className="flex justify-end">
-          <Button onClick={handleNext} type="button" variant="outline">
+          <Button onClick={handleNext} type="button">
             Lanjut ke Data Barang
           </Button>
         </div>

@@ -97,9 +97,9 @@ export default function LoginPage() {
             <div className="w-full max-w-[460px]">
               <div className="flex flex-col gap-2">
                 <Asterisk className="size-6 text-primary" />
-                <h1 className="font-display text-5xl leading-tight text-foreground">Create account</h1>
+                <h1 className="font-display text-5xl leading-tight text-foreground">Login</h1>
                 <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                  Buat akun operator untuk mengakses Multi-Step Resi dan Invoice Generator Fleetify.
+                  Masuk ke akun operator untuk mengakses Multi-Step Resi dan Invoice Generator Fleetify.
                 </p>
               </div>
 
