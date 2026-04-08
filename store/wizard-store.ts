@@ -115,7 +115,6 @@ export const useWizardStore = create<WizardState>()(
     }),
     {
       name: "fleetify-wizard",
-      skipHydration: true,
       partialize: (state) => ({
         step: state.step,
         clientData: state.clientData,

@@ -1,20 +1,13 @@
 import "@/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Bricolage_Grotesque, IBM_Plex_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 
-import { useWizardStore } from "@/store/wizard-store";
-
-const headingFont = Bricolage_Grotesque({
-  subsets: ["latin"],
-  variable: "--font-display",
-});
-
-const bodyFont = IBM_Plex_Sans({
+const jakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
+  variable: "--font-jakarta",
 });
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -31,12 +24,18 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 
   useEffect(() => {
-    useWizardStore.persist.rehydrate();
+    document.documentElement.classList.add(jakartaSans.className, jakartaSans.variable);
+    document.body.classList.add(jakartaSans.className, jakartaSans.variable);
+
+    return () => {
+      document.documentElement.classList.remove(jakartaSans.className, jakartaSans.variable);
+      document.body.classList.remove(jakartaSans.className, jakartaSans.variable);
+    };
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <main className={`${headingFont.variable} ${bodyFont.variable}`}>
+      <main>
         <Component {...pageProps} />
       </main>
     </QueryClientProvider>

@@ -1,19 +1,21 @@
 import { useState } from "react";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWizardStore } from "@/store/wizard-store";
 
-import ItemRow from "./ItemRow";
+import ItemsDataTable from "./ItemsDataTable";
 
 const currency = new Intl.NumberFormat("id-ID");
 
 export default function StepItems() {
-  const { items, addItemRow, removeItemRow, prevStep, nextStep } = useWizardStore((state) => ({
-    items: state.items,
-    addItemRow: state.addItemRow,
-    removeItemRow: state.removeItemRow,
-    prevStep: state.prevStep,
-    nextStep: state.nextStep,
-  }));
+  const items = useWizardStore((state) => state.items);
+  const addItemRow = useWizardStore((state) => state.addItemRow);
+  const removeItemRow = useWizardStore((state) => state.removeItemRow);
+  const prevStep = useWizardStore((state) => state.prevStep);
+  const nextStep = useWizardStore((state) => state.nextStep);
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -30,63 +32,40 @@ export default function StepItems() {
   const total = items.reduce((sum, row) => sum + row.subtotal, 0);
 
   return (
-    <section className="rounded-3xl border border-slate-800/40 bg-slate-950/70 p-6 shadow-2xl backdrop-blur">
-      <h2 className="font-display text-2xl text-amber-200">Step 2 - Data Barang</h2>
-      <p className="mt-2 text-sm text-slate-300">
-        Ketik kode barang, sistem akan lookup otomatis setelah 500ms. Input cepat aman dari race condition.
-      </p>
+    <Card className="border border-border bg-card backdrop-blur">
+      <CardHeader>
+        <CardTitle className="font-display text-2xl">Step 2 - Data Barang</CardTitle>
+        <CardDescription>
+          Ketik kode barang, sistem akan lookup otomatis setelah 500ms. Input cepat aman dari race condition.
+        </CardDescription>
+      </CardHeader>
 
-      <div className="mt-6 overflow-x-auto rounded-xl border border-slate-800">
-        <table className="min-w-full border-collapse">
-          <thead className="bg-slate-900/80 text-left text-xs uppercase tracking-wider text-slate-400">
-            <tr>
-              <th className="px-3 py-3">Kode Barang</th>
-              <th className="px-3 py-3">Nama Barang</th>
-              <th className="px-3 py-3">Qty</th>
-              <th className="px-3 py-3">Harga</th>
-              <th className="px-3 py-3">Subtotal</th>
-              <th className="px-3 py-3" />
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((row) => (
-              <ItemRow key={row.id} row={row} onRemove={removeItemRow} canRemove={items.length > 1} />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <CardContent className="flex flex-col gap-4">
+        <ItemsDataTable items={items} onRemove={removeItemRow} canRemove={items.length > 1} />
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <button
-          type="button"
-          onClick={addItemRow}
-          className="rounded-xl border border-amber-300/60 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-300/10"
-        >
-          + Tambah Baris
-        </button>
-        <p className="text-sm text-slate-300">
-          Estimasi Total: <span className="font-semibold text-amber-200">Rp {currency.format(total)}</span>
-        </p>
-      </div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Button type="button" variant="outline" onClick={addItemRow}>
+            + Tambah Baris
+          </Button>
+          <Badge variant="outline">Estimasi Total: Rp {currency.format(total)}</Badge>
+        </div>
 
-      {error ? <p className="mt-4 rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p> : null}
+        {error ? (
+          <Alert>
+            <AlertTitle>Data barang belum valid</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
 
-      <div className="mt-6 flex justify-between">
-        <button
-          type="button"
-          onClick={prevStep}
-          className="rounded-xl border border-slate-600 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-800"
-        >
-          Kembali
-        </button>
-        <button
-          type="button"
-          onClick={handleNext}
-          className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
-        >
-          Lanjut Review
-        </button>
-      </div>
-    </section>
+        <div className="flex flex-wrap justify-between gap-3">
+          <Button type="button" variant="outline" onClick={prevStep}>
+            Kembali
+          </Button>
+          <Button type="button" variant="outline" onClick={handleNext}>
+            Lanjut ke Review
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

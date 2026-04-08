@@ -1,9 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { Asterisk, Eye, EyeOff } from "lucide-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { hasValidToken } from "@/lib/auth";
 import api from "@/lib/http";
 
@@ -22,6 +27,7 @@ export default function LoginPage() {
   const hasRedirectedRef = useRef(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState("");
 
   useEffect(() => {
@@ -71,57 +77,88 @@ export default function LoginPage() {
   return (
     <>
       <Head>
-        <title>Login | Fleetify Invoice</title>
+        <title>Sign In | Fleetify Wizard</title>
       </Head>
 
-      <div className="mesh-bg flex min-h-screen items-center justify-center px-4 py-10">
-        <form
-          onSubmit={onSubmit}
-          className="w-full max-w-md rounded-3xl border border-slate-800/50 bg-slate-950/70 p-7 shadow-2xl backdrop-blur"
-        >
-          <p className="text-xs uppercase tracking-[0.26em] text-amber-300/80">Fleetify Access</p>
-          <h1 className="mt-2 font-display text-4xl text-slate-50">Login Dashboard</h1>
-          <p className="mt-2 text-sm text-slate-300">Gunakan akun Admin atau Kerani untuk memulai wizard invoice.</p>
+      <div className="auth-surface min-h-screen">
+        <div className="grid min-h-screen md:grid-cols-[1.06fr_1fr]">
+          <section className="auth-left-panel relative hidden min-h-screen overflow-hidden px-10 py-10 text-primary-foreground md:flex md:flex-col md:justify-between">
+            <Asterisk className="size-10 opacity-95" />
 
-          <div className="mt-6 space-y-4">
-            <label className="flex flex-col gap-2 text-sm text-slate-200">
-              Username
-              <input
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-amber-400"
-                placeholder="admin"
-              />
-            </label>
+            <div className="max-w-sm">
+              <p className="text-xl font-semibold text-primary-foreground/90">Fleetify Wizard</p>
+              <h2 className="mt-4 text-6xl leading-[1.02] font-medium tracking-tight text-primary-foreground">
+                Build your account to start Resi and Invoice workflows.
+              </h2>
+            </div>
+          </section>
 
-            <label className="flex flex-col gap-2 text-sm text-slate-200">
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-amber-400"
-                placeholder="admin123"
-              />
-            </label>
-          </div>
+          <section className="flex min-h-screen items-center justify-center bg-card px-6 py-10 md:px-12">
+            <div className="w-full max-w-[460px]">
+              <div className="flex flex-col gap-2">
+                <Asterisk className="size-6 text-primary" />
+                <h1 className="font-display text-5xl leading-tight text-foreground">Create account</h1>
+                <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+                  Buat akun operator untuk mengakses Multi-Step Resi dan Invoice Generator Fleetify.
+                </p>
+              </div>
 
-          {formError ? <p className="mt-4 rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{formError}</p> : null}
+              <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-5">
+                <label className="flex flex-col gap-2 text-foreground">
+                  <span className="text-2xl font-medium">Email or Username</span>
+                  <Input
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                    placeholder="admin atau kerani"
+                    className="h-12 rounded-md border-border bg-background/80 text-base"
+                  />
+                </label>
 
-          <button
-            type="submit"
-            disabled={loginMutation.isPending}
-            className="mt-6 w-full rounded-xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loginMutation.isPending ? "Memproses..." : "Masuk"}
-          </button>
+                <label className="flex flex-col gap-2 text-foreground">
+                  <span className="text-2xl font-medium">Password</span>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="••••••••••"
+                      className="h-12 rounded-md border-border bg-background/80 pr-12 text-base"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-md text-muted-foreground"
+                      onClick={() => setShowPassword((value) => !value)}
+                    >
+                      {showPassword ? <EyeOff data-icon="inline-start" /> : <Eye data-icon="inline-start" />}
+                    </Button>
+                  </div>
+                </label>
 
-          <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900/70 p-3 text-xs text-slate-400">
-            <p>Demo account:</p>
-            <p>Admin / admin123</p>
-            <p>Kerani / kerani123</p>
-          </div>
-        </form>
+                {formError ? (
+                  <Alert className="rounded-none">
+                    <AlertTitle>Sign In failed</AlertTitle>
+                    <AlertDescription>{formError}</AlertDescription>
+                  </Alert>
+                ) : null}
+
+                <Button type="submit" disabled={loginMutation.isPending} className="h-12 rounded-md text-base font-semibold">
+                  {loginMutation.isPending ? "Memproses..." : "Sign In"}
+                </Button>
+
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <Separator className="flex-1" />
+                  <span>test credentials</span>
+                  <Separator className="flex-1" />
+                </div>
+
+                <p className="text-sm text-muted-foreground">admin / admin123</p>
+                <p className="text-sm text-muted-foreground">kerani / kerani123</p>
+              </form>
+            </div>
+          </section>
+        </div>
       </div>
     </>
   );

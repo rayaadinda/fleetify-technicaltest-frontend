@@ -1,60 +1,10 @@
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --ink-1000: #020617;
-  --ink-900: #0f172a;
-  --ink-700: #334155;
-  --sand-200: #fef3c7;
-  --amber-400: #fbbf24;
-  --amber-300: #fcd34d;
-  --mist: #cbd5e1;
-}
-
-body {
-  min-height: 100vh;
-  color: #f8fafc;
-  font-family: var(--font-body), sans-serif;
-  background:
-    radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.18), transparent 28%),
-    radial-gradient(circle at 12% 78%, rgba(56, 189, 248, 0.16), transparent 34%),
-    linear-gradient(140deg, var(--ink-1000), var(--ink-900));
-}
-
-.font-display {
-  font-family: var(--font-display), sans-serif;
-}
-
-.mesh-bg {
-  background-image:
-    linear-gradient(rgba(100, 116, 139, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100, 116, 139, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 18% 20%, rgba(251, 191, 36, 0.1), transparent 26%),
-    radial-gradient(circle at 82% 78%, rgba(16, 185, 129, 0.08), transparent 24%);
-  background-size:
-    36px 36px,
-    36px 36px,
-    100% 100%,
-    100% 100%;
-}
-
-@media print {
-  body {
-    color: #0f172a;
-    background: #fff;
-  }
-
-  .mesh-bg {
-    background: #fff;
-  }
-}
-
 @layer base {
   .theme {
-    --font-heading: var(--font-sans);
+    --font-heading: var(--font-heading);
     --font-sans: var(--font-sans);
   }
   :root {
@@ -81,7 +31,7 @@ body {
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
+    --radius: 0.45rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -125,12 +75,98 @@ body {
     --sidebar-ring: oklch(0.556 0 0);
   }
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
   }
   body {
     @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
+  }
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+button,
+input,
+textarea,
+select,
+[role="dialog"],
+[cmdk-root],
+[cmdk-input] {
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+.mesh-bg {
+  background: var(--background);
+}
+
+.auth-surface {
+  --primary: oklch(0.58 0.24 286);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.86 0 0);
+  --secondary-foreground: oklch(0.22 0 0);
+  background:
+    radial-gradient(1200px 500px at 50% 108%, rgba(121, 87, 255, 0.22), transparent 68%),
+    linear-gradient(180deg, #f5f4f8, #efedf4 58%, #ece9f2);
+}
+
+.auth-left-panel {
+  background:
+    radial-gradient(52% 72% at 18% 50%, rgba(56, 0, 220, 0.96), transparent 78%),
+    linear-gradient(121deg, #7bd8fb 0%, #7f4dff 44%, #d4dbed 100%);
+}
+
+.wizard-surface,
+.wizard-theme-root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  --primary: oklch(1 0 0);
+  --primary-foreground: oklch(0.15 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.15 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.15 0 0);
+  --border: oklch(0.25 0 0);
+  --input: oklch(0.25 0 0);
+  --ring: oklch(0.15 0 0);
+  color: var(--foreground);
+  background: var(--background);
+}
+
+.wizard-surface .mesh-bg {
+  background: var(--background);
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  .mesh-bg {
+    background: #fff;
+  }
+
+  .invoice-print-only {
+    display: block !important;
   }
 }

@@ -1,13 +1,16 @@
 import { useState } from "react";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useWizardStore } from "@/store/wizard-store";
 
 export default function StepClient() {
-  const { clientData, updateClientData, nextStep } = useWizardStore((state) => ({
-    clientData: state.clientData,
-    updateClientData: state.updateClientData,
-    nextStep: state.nextStep,
-  }));
+  const clientData = useWizardStore((state) => state.clientData);
+  const updateClientData = useWizardStore((state) => state.updateClientData);
+  const nextStep = useWizardStore((state) => state.nextStep);
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -21,63 +24,66 @@ export default function StepClient() {
   };
 
   return (
-    <section className="rounded-3xl border border-slate-800/40 bg-slate-950/70 p-6 shadow-2xl backdrop-blur">
-      <h2 className="font-display text-2xl text-amber-200">Step 1 - Data Klien</h2>
-      <p className="mt-2 text-sm text-slate-300">Lengkapi data pengirim dan penerima sebelum masuk ke daftar barang.</p>
+    <Card className="border border-border bg-card backdrop-blur">
+      <CardHeader>
+        <CardTitle className="font-display text-2xl">Step 1 - Data Klien</CardTitle>
+        <CardDescription>Lengkapi data pengirim dan penerima sebelum masuk ke daftar barang.</CardDescription>
+      </CardHeader>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <label className="flex flex-col gap-2 text-sm text-slate-200">
-          Nama Pengirim
-          <input
-            value={clientData.senderName}
-            onChange={(event) => updateClientData({ senderName: event.target.value })}
-            className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-amber-400"
-            placeholder="PT Logistik Maju"
-          />
-        </label>
+      <CardContent className="flex flex-col gap-6">
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex flex-col gap-2 text-sm">
+            Nama Pengirim
+            <Input
+              value={clientData.senderName}
+              onChange={(event) => updateClientData({ senderName: event.target.value })}
+              placeholder="PT Logistik Maju"
+            />
+          </label>
 
-        <label className="flex flex-col gap-2 text-sm text-slate-200">
-          Nama Penerima
-          <input
-            value={clientData.receiverName}
-            onChange={(event) => updateClientData({ receiverName: event.target.value })}
-            className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-amber-400"
-            placeholder="Budi Santoso"
-          />
-        </label>
+          <label className="flex flex-col gap-2 text-sm">
+            Nama Penerima
+            <Input
+              value={clientData.receiverName}
+              onChange={(event) => updateClientData({ receiverName: event.target.value })}
+              placeholder="Budi Santoso"
+            />
+          </label>
 
-        <label className="flex flex-col gap-2 text-sm text-slate-200 md:col-span-2">
-          Alamat Pengirim
-          <textarea
-            value={clientData.senderAddress}
-            onChange={(event) => updateClientData({ senderAddress: event.target.value })}
-            className="min-h-24 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-amber-400"
-            placeholder="Jl. Raya Industri No.10, Jakarta"
-          />
-        </label>
+          <label className="flex flex-col gap-2 text-sm md:col-span-2">
+            Alamat Pengirim
+            <Textarea
+              value={clientData.senderAddress}
+              onChange={(event) => updateClientData({ senderAddress: event.target.value })}
+              placeholder="Jl. Raya Industri No.10, Jakarta"
+              className="min-h-24"
+            />
+          </label>
 
-        <label className="flex flex-col gap-2 text-sm text-slate-200 md:col-span-2">
-          Alamat Penerima (opsional)
-          <textarea
-            value={clientData.receiverAddress}
-            onChange={(event) => updateClientData({ receiverAddress: event.target.value })}
-            className="min-h-24 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-amber-400"
-            placeholder="Jl. Melati No.12, Surabaya"
-          />
-        </label>
-      </div>
+          <label className="flex flex-col gap-2 text-sm md:col-span-2">
+            Alamat Penerima (opsional)
+            <Textarea
+              value={clientData.receiverAddress}
+              onChange={(event) => updateClientData({ receiverAddress: event.target.value })}
+              placeholder="Jl. Melati No.12, Surabaya"
+              className="min-h-24"
+            />
+          </label>
+        </div>
 
-      {error ? <p className="mt-4 rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p> : null}
+        {error ? (
+          <Alert>
+            <AlertTitle>Data belum lengkap</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
 
-      <div className="mt-6 flex justify-end">
-        <button
-          onClick={handleNext}
-          className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
-          type="button"
-        >
-          Lanjut ke Data Barang
-        </button>
-      </div>
-    </section>
+        <div className="flex justify-end">
+          <Button onClick={handleNext} type="button" variant="outline">
+            Lanjut ke Data Barang
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
