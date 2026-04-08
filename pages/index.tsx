@@ -4,11 +4,12 @@ import { Check } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StepClient from "@/components/wizard/StepClient";
 import StepItems from "@/components/wizard/StepItems";
 import StepReview from "@/components/wizard/StepReview";
-import { hasValidToken } from "@/lib/auth";
+import { clearToken, hasValidToken } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { useWizardStore } from "@/store/wizard-store";
 
@@ -19,6 +20,7 @@ export default function Home() {
   const { isReady, replace } = router;
   const step = useWizardStore((state) => state.step);
   const setStep = useWizardStore((state) => state.setStep);
+  const resetWizard = useWizardStore((state) => state.resetWizard);
   const clientData = useWizardStore((state) => state.clientData);
   const items = useWizardStore((state) => state.items);
   const hasRedirectedRef = useRef(false);
@@ -91,6 +93,18 @@ export default function Home() {
                 Progress tersimpan otomatis. Refresh browser tetap aman tanpa kehilangan data wizard.
               </p>
             </div>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                clearToken();
+                resetWizard();
+                toast.success("Logout berhasil.");
+                void replace("/login");
+              }}
+            >
+              Logout
+            </Button>
           </header>
 
           <Tabs
