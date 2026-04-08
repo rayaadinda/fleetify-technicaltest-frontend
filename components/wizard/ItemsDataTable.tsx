@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-table";
 import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -101,6 +102,7 @@ function ItemCodeCell({ row }: { row: ItemRowType }) {
           isLoading: false,
           error: "Gagal mengambil data item",
         });
+        toast.error("Gagal mengambil data item.");
       }
     }, 350);
 
@@ -143,6 +145,7 @@ function ItemCodeCell({ row }: { row: ItemRowType }) {
             isLoading: false,
             error: "Kode barang tidak ditemukan",
           });
+          toast.warning("Kode barang tidak ditemukan.");
           return;
         }
 
@@ -162,6 +165,7 @@ function ItemCodeCell({ row }: { row: ItemRowType }) {
           price: 0,
           error: "Gagal mengambil data item",
         });
+        toast.error("Gagal mengambil data item.");
       }
     }, 350);
 

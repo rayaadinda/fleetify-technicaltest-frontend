@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Check } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { toast } from "sonner";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StepClient from "@/components/wizard/StepClient";
@@ -101,12 +102,16 @@ export default function Home() {
               }
 
               if (parsed === 2 && !isStep1Valid) {
-                setStepError("Lengkapi Step 1 terlebih dahulu sebelum masuk Step 2.");
+                const message = "Lengkapi Step 1 terlebih dahulu sebelum masuk Step 2.";
+                setStepError(message);
+                toast.warning(message);
                 return;
               }
 
               if (parsed === 3 && (!isStep1Valid || !isStep2Valid)) {
-                setStepError("Lengkapi Step 1 dan Step 2 terlebih dahulu sebelum masuk Step 3.");
+                const message = "Lengkapi Step 1 dan Step 2 terlebih dahulu sebelum masuk Step 3.";
+                setStepError(message);
+                toast.warning(message);
                 return;
               }
 

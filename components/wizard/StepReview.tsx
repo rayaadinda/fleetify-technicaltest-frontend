@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -73,13 +74,16 @@ export default function StepReview() {
     onSuccess: (data) => {
       setSubmitError("");
       setSubmitted(data);
+      toast.success(`Invoice berhasil dibuat: ${data.invoice_number}`);
     },
     onError: (error) => {
       if (error instanceof Error) {
         setSubmitError(error.message);
+        toast.error(error.message);
         return;
       }
       setSubmitError("Gagal submit invoice");
+      toast.error("Gagal submit invoice");
     },
   });
 
@@ -163,7 +167,14 @@ export default function StepReview() {
           </Button>
 
           <div className="flex flex-wrap gap-3">
-            <Button type="button" variant="outline" onClick={() => window.open(printUrl, "_blank", "noopener,noreferrer")}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                toast.info("Membuka dokumen invoice untuk dicetak...");
+                window.open(printUrl, "_blank", "noopener,noreferrer");
+              }}
+            >
               Cetak Invoice
             </Button>
 

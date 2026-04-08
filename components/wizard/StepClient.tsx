@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -15,11 +16,14 @@ export default function StepClient() {
 
   const handleNext = () => {
     if (!clientData.senderName || !clientData.senderAddress || !clientData.receiverName) {
-      setError("Nama pengirim, alamat pengirim, dan nama penerima wajib diisi.");
+      const message = "Nama pengirim, alamat pengirim, dan nama penerima wajib diisi.";
+      setError(message);
+      toast.warning(message);
       return;
     }
 
     setError("");
+    toast.success("Data klien valid. Lanjut ke Data Barang.");
     nextStep();
   };
 

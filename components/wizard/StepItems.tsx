@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -20,11 +21,14 @@ export default function StepItems() {
   const handleNext = () => {
     const invalid = items.some((row) => !row.itemCode.trim() || !row.itemName.trim() || row.quantity <= 0);
     if (invalid) {
-      setError("Lengkapi semua baris item dengan kode valid dan quantity lebih dari 0.");
+      const message = "Lengkapi semua baris item dengan kode valid dan quantity lebih dari 0.";
+      setError(message);
+      toast.warning(message);
       return;
     }
 
     setError("");
+    toast.success("Data barang valid. Lanjut ke Review.");
     nextStep();
   };
 
@@ -43,7 +47,14 @@ export default function StepItems() {
         <ItemsDataTable items={items} onRemove={removeItemRow} canRemove={items.length > 1} />
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <Button type="button" variant="outline" onClick={addItemRow}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              addItemRow();
+              toast.info("Baris item baru ditambahkan.");
+            }}
+          >
             + Tambah Baris
           </Button>
           <div className="rounded-md border border-border bg-white px-3 py-1.5 text-sm font-medium text-foreground">

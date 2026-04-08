@@ -4,6 +4,7 @@ import { Asterisk, Eye, EyeOff } from "lucide-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -56,10 +57,12 @@ export default function LoginPage() {
         sameSite: "strict",
       });
       setFormError("");
+      toast.success("Login berhasil. Mengarahkan ke dashboard...");
       void replace("/");
     },
     onError: () => {
       setFormError("Username atau password tidak valid.");
+      toast.error("Username atau password tidak valid.");
     },
   });
 
@@ -68,6 +71,7 @@ export default function LoginPage() {
 
     if (!username || !password) {
       setFormError("Username dan password wajib diisi.");
+      toast.warning("Username dan password wajib diisi.");
       return;
     }
 

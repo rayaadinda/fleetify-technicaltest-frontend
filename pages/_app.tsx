@@ -4,6 +4,8 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 
+import { Toaster } from "@/components/ui/sonner";
+
 const jakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -38,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <main>
         <Component {...pageProps} />
       </main>
+      <Toaster position="top-right" richColors closeButton />
     </QueryClientProvider>
   );
 }
