@@ -183,7 +183,7 @@ function ItemCodeCell({ row }: { row: ItemRowType }) {
         <PopoverContent
           align="start"
           sideOffset={8}
-          className="w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-white p-0 shadow-lg"
+          className="w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-white p-0 shadow-lg ring-0 outline-none"
         >
           <Command>
             <CommandInput placeholder="Cari kode barang..." value={search} onValueChange={setSearch} />

@@ -160,7 +160,8 @@ select,
 :is(.wizard-surface, .wizard-theme-root) [data-slot="input"],
 :is(.wizard-surface, .wizard-theme-root) [data-slot="textarea"],
 :is(.wizard-surface, .wizard-theme-root) [data-slot="popover-content"],
-:is(.wizard-surface, .wizard-theme-root) [data-slot="table"] {
+:is(.wizard-surface, .wizard-theme-root) [data-slot="table"],
+:is(.wizard-surface, .wizard-theme-root) [data-slot="input-group"] {
   border-color: var(--border);
 }
 
@@ -168,6 +169,24 @@ select,
 :is(.wizard-surface, .wizard-theme-root) [data-slot="textarea"]:focus-visible {
   border-color: var(--foreground);
   box-shadow: none;
+}
+
+:is(.wizard-surface, .wizard-theme-root) [data-slot="input-group"] {
+  box-shadow: none !important;
+}
+
+:is(.wizard-surface, .wizard-theme-root) [data-slot="input-group"]:has([data-slot="input-group-control"]:focus-visible) {
+  border-color: var(--foreground);
+  box-shadow: none !important;
+}
+
+:is(.wizard-surface, .wizard-theme-root) [data-slot="popover-content"] {
+  outline: none;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.invoice-print-only {
+  display: none;
 }
 
 @media print {
@@ -187,5 +206,30 @@ select,
 
   .invoice-print-only {
     display: block !important;
+  }
+
+  .invoice-print-layout {
+    width: 100%;
+    color: #111;
+    font-family: var(--font-jakarta), sans-serif;
+  }
+
+  .invoice-print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10mm;
+  }
+
+  .invoice-print-table th,
+  .invoice-print-table td {
+    border: 1px solid #222;
+    padding: 8px;
+    font-size: 12px;
+    vertical-align: top;
+  }
+
+  .invoice-print-table th {
+    text-align: left;
+    background: #f4f4f4;
   }
 }

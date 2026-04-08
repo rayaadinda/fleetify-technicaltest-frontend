@@ -27,6 +27,13 @@ export default function StepReview() {
   const [submitted, setSubmitted] = useState<SubmitResponse | null>(null);
 
   const grandTotal = useMemo(() => items.reduce((acc, row) => acc + row.subtotal, 0), [items]);
+  const printUrl = useMemo(() => {
+    const params = new URLSearchParams({
+      invoice: submitted?.invoice_number || "DRAFT",
+    });
+
+    return `/invoice-print?${params.toString()}`;
+  }, [submitted]);
 
   const submitMutation = useMutation({
     mutationFn: async () => {
@@ -84,8 +91,8 @@ export default function StepReview() {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-5">
-        <section className="invoice-print-area">
-          <div className="flex flex-col gap-5 print:hidden">
+        <section>
+          <div className="flex flex-col gap-5">
             <div className="grid gap-3 rounded-lg border p-4 text-sm md:grid-cols-2">
               <p>
                 <span className="text-muted-foreground">Pengirim:</span> {clientData.senderName}
@@ -134,58 +141,6 @@ export default function StepReview() {
             </div>
           </div>
 
-          <div className="invoice-print-only hidden">
-            <header className="mb-4 border-b pb-3">
-              <h1 className="text-2xl font-semibold">Fleetify Logistics</h1>
-              <p className="text-sm text-muted-foreground">Jl. Armada Raya No. 10, Jakarta</p>
-              <p className="text-sm text-muted-foreground">Invoice Number: {submitted?.invoice_number || "DRAFT"}</p>
-            </header>
-
-            <div className="mb-4 grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="font-semibold">Pengirim</p>
-                <p>{clientData.senderName}</p>
-                <p>{clientData.senderAddress}</p>
-              </div>
-              <div>
-                <p className="font-semibold">Penerima</p>
-                <p>{clientData.receiverName}</p>
-                <p>{clientData.receiverAddress || "-"}</p>
-              </div>
-            </div>
-
-            <Table className="mb-4 w-full rounded-none border border-foreground/60 bg-white text-sm">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Kode</TableHead>
-                  <TableHead>Nama</TableHead>
-                  <TableHead className="text-right">Qty</TableHead>
-                  <TableHead className="text-right">Harga</TableHead>
-                  <TableHead className="text-right">Subtotal</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((row) => (
-                  <TableRow key={`print-${row.id}`}>
-                    <TableCell>{row.itemCode}</TableCell>
-                    <TableCell>{row.itemName}</TableCell>
-                    <TableCell className="text-right">{row.quantity}</TableCell>
-                    <TableCell className="text-right">Rp {currency.format(row.price)}</TableCell>
-                    <TableCell className="text-right">Rp {currency.format(row.subtotal)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-
-            <div className="flex justify-end">
-              <div className="w-72 border p-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span>Total</span>
-                  <span className="font-semibold">Rp {currency.format(grandTotal)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </section>
 
         {submitted ? (
@@ -202,13 +157,13 @@ export default function StepReview() {
           </Alert>
         ) : null}
 
-        <div className="flex flex-wrap justify-between gap-3 print:hidden">
+        <div className="flex flex-wrap justify-between gap-3">
           <Button type="button" variant="outline" onClick={prevStep}>
             Kembali
           </Button>
 
           <div className="flex flex-wrap gap-3">
-            <Button type="button" variant="outline" onClick={() => window.print()}>
+            <Button type="button" variant="outline" onClick={() => window.open(printUrl, "_blank", "noopener,noreferrer")}>
               Cetak Invoice
             </Button>
 
