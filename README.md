@@ -45,8 +45,8 @@ npm run dev
 
 ## Login Demo
 
-- Admin / admin123
-- Kerani / kerani123
+- admin / admin123
+- kerani / kerani123
 
 ## Implemented Requirements
 
